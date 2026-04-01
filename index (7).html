@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration — Espace Universitaire</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- ========== LOGIN PAGE ========== -->
+  <div id="login-page">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="login-icon">🎓</div>
+        <div class="login-title">UniAdmin</div>
+        <div class="login-subtitle">Espace Administrateur</div>
+      </div>
+      <div class="login-field">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="admin@universite.dz">
+      </div>
+      <div class="login-field">
+        <label>Mot de passe</label>
+        <input type="password" id="login-password" placeholder="••••••••">
+      </div>
+      <button class="login-btn" id="login-btn">Se connecter</button>
+      <div class="login-error" id="login-error"></div>
+    </div>
+  </div>
+
+  <!-- ========== APP PAGE ========== -->
+  <div id="app-page">
+    <div class="container">
+
+      <!-- Header -->
+      <header>
+        <div class="logo">
+          <div class="logo-icon">🎓</div>
+          <div class="logo-text">Uni<span>Admin</span></div>
+        </div>
+        <div class="header-right">
+          <span class="admin-email" id="admin-email"></span>
+          <button class="logout-btn" id="logout-btn">⬅ Déconnexion</button>
+        </div>
+      </header>
+
+      <!-- Planning Section -->
+      <div class="section-header">
+        <div class="section-title">📅 Planning</div>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="cards-grid">
+
+        <!-- Planning Card -->
+        <div class="upload-card planning">
+          <div class="card-icon">📅</div>
+          <div class="card-title">Uploader un Planning</div>
+          <div class="card-desc">Sera nommé automatiquement.<br>Ex : G1_L1.xlsx → stocké dans "planning"</div>
+
+          <div class="field">
+            <label>Niveau</label>
+            <select id="planning-level">
+              <option value="L1">L1</option>
+              <option value="L2">L2</option>
+              <option value="L3">L3</option>
+              <option value="M1">M1</option>
+              <option value="M2">M2</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Groupe</label>
+            <select id="planning-group">
+              <option value="G1">G1</option>
+              <option value="G2">G2</option>
+              <option value="G3">G3</option>
+              <option value="G4">G4</option>
+            </select>
+          </div>
+
+          <div class="dropzone" id="planning-dropzone">
+            <input type="file" accept=".xlsx,.xls" id="planning-file">
+            <div class="dropzone-icon">📂</div>
+            <div class="dropzone-text">
+              <strong>Choisir un fichier Excel</strong>
+              .xlsx ou .xls uniquement
+            </div>
+          </div>
+
+          <div class="file-selected" id="planning-file-info">
+            ✅ <span id="planning-file-name"></span>
+          </div>
+
+          <button class="btn-upload" id="planning-btn" disabled>⬆️ Uploader le Planning</button>
+
+          <div class="progress-wrap" id="planning-progress">
+            <div class="progress-bar"><div class="progress-fill" id="planning-fill"></div></div>
+            <div class="progress-text" id="planning-progress-text">Upload en cours...</div>
+          </div>
+        </div>
+
+        <!-- Notes Card -->
+        <div class="upload-card notes">
+          <div class="card-icon">📊</div>
+          <div class="card-title">Uploader les Notes</div>
+          <div class="card-desc">Sera nommé automatiquement.<br>Ex : L1.xlsx → stocké dans "notes"</div>
+
+          <div class="field">
+            <label>Niveau</label>
+            <select id="notes-level">
+              <option value="L1">L1</option>
+              <option value="L2">L2</option>
+              <option value="L3">L3</option>
+              <option value="M1">M1</option>
+              <option value="M2">M2</option>
+            </select>
+          </div>
+
+          <div class="dropzone" id="notes-dropzone">
+            <input type="file" accept=".xlsx,.xls" id="notes-file">
+            <div class="dropzone-icon">📂</div>
+            <div class="dropzone-text">
+              <strong>Choisir un fichier Excel</strong>
+              .xlsx ou .xls uniquement
+            </div>
+          </div>
+
+          <div class="file-selected" id="notes-file-info">
+            ✅ <span id="notes-file-name"></span>
+          </div>
+
+          <button class="btn-upload" id="notes-btn" disabled>⬆️ Uploader les Notes</button>
+
+          <div class="progress-wrap" id="notes-progress">
+            <div class="progress-bar"><div class="progress-fill" id="notes-fill"></div></div>
+            <div class="progress-text" id="notes-progress-text">Upload en cours...</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Files Section -->
+      <div class="section-header">
+        <div class="section-title">🗂️ Fichiers Stockés</div>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="history-section">
+        <div class="history-header">
+          <div class="history-title">Supabase Storage</div>
+          <button class="refresh-btn" id="refresh-btn">↻ Actualiser</button>
+        </div>
+        <div id="files-table-container">
+          <div class="empty-state">Connectez-vous pour voir les fichiers</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toasts"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
