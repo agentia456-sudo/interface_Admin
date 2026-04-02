@@ -1,8 +1,8 @@
 // ============================================
 // ⚠️  REMPLACE CES 2 VALEURS
 // ============================================
-const SUPABASE_URL      = 'https://VOTRE_PROJECT.supabase.co';
-const SUPABASE_ANON_KEY = 'VOTRE_ANON_KEY';
+const SUPABASE_URL      = 'https://mxemardtyidrhfsnxvad.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14ZW1hcmR0eWlkcmhmc254dmFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NzkwMzQsImV4cCI6MjA4ODQ1NTAzNH0.u1eFWdodluIqZQ-_Cr5IzSNMNUE1H4GQU-oDYT4Z1oo';
 // ============================================
 
 const { createClient } = supabase;
